@@ -1,7 +1,7 @@
 """
 Tests for SGA
 """
-# pylint: disable=imported-auth-user
+# pylint: disable=imported-auth-user, unspecified-encoding
 import datetime
 import html
 import json
