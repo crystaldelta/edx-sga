@@ -13,16 +13,16 @@ jsonfield==3.1.0
 mako==1.0.7
 mock==2.0.0
 pdbpp==0.10.0
-pep8==1.6.2
+pep8==1.7.0
 pylint-celery==0.3
 pylint-django==2.2.0
 pyOpenSSL==17.3.0
-pytz==2020.5
-pytest==6.1.1
-pytest-cov==2.10.0
-pytest-django==4.0.0
+pytz==2021.1
+pytest==6.1.2
+pytest-cov==2.12.1
+pytest-django==4.4.0
 pytest-mock==3.3.1
-six==1.14.0
+six==1.16.0
 tox==3.20.0
 
 xblock-utils==2.2.0
