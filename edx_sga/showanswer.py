@@ -2,7 +2,7 @@
 
 import logging
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from xblock.fields import Scope, String
 
 from edx_sga.constants import ShowAnswer

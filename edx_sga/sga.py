@@ -24,7 +24,7 @@ from django.core.files.storage import default_storage
 from django.template import Context, Template
 from django.utils.encoding import force_text
 from django.utils.timezone import now as django_now
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from lms.djangoapps.courseware.models import StudentModule
 from safe_lxml import etree
 from common.djangoapps.student.models import user_by_anonymous_id
