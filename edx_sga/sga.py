@@ -79,7 +79,7 @@ class StaffGradedAssignmentXBlock(StudioEditableXBlockMixin, ShowAnswerXBlockMix
 
     display_name = String(
         display_name=_("Display Name"),
-        default=_('Staff Graded Assignment'),
+        default=_('Student Assessment'),
         scope=Scope.settings,
         help=_("This name appears in the horizontal navigation at the top of "
                "the page.")
