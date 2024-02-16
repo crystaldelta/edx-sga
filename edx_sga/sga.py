@@ -34,6 +34,7 @@ from xblock.fragment import Fragment  # lint-amnesty, pylint: disable=import-err
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 from xmodule.util.duedate import get_extended_due_date  # lint-amnesty, pylint: disable=import-error
 from xmodule.contentstore.content import StaticContent
+from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
 
 from edx_sga.constants import ITEM_TYPE
 from edx_sga.showanswer import ShowAnswerXBlockMixin
@@ -580,7 +581,8 @@ class StaffGradedAssignmentXBlock(StudioEditableXBlockMixin, ShowAnswerXBlockMix
             "student_state": json.dumps(self.student_state()),
             "id": self.location.name.replace('.', '_'),
             "max_file_size": self.student_upload_max_size(),
-            "support_email": settings.TECH_SUPPORT_EMAIL
+            "support_email": settings.TECH_SUPPORT_EMAIL,
+            "enable_hide_assignment": configuration_helpers.get_value_theme('ENABLE_HIDE_ASSIGNMENT', False)
         }
         if self.show_staff_grading_interface():
             context['is_course_staff'] = True
@@ -783,6 +785,7 @@ class StaffGradedAssignmentXBlock(StudioEditableXBlockMixin, ShowAnswerXBlockMix
             "upload_allowed": self.upload_allowed(submission_data=submission),
             "solution": solution,
             "base_asset_url": StaticContent.get_base_url_path_for_course_assets(self.location.course_key),
+            "enable_hide_assignment": configuration_helpers.get_value_theme('ENABLE_HIDE_ASSIGNMENT', False)
         }
 
     def staff_grading_data(self):
