@@ -10,13 +10,15 @@ jobs:
       - name: Python setup
         uses: actions/setup-python@v2
         with:
-          python-version: "3.8"
+          python-version: "2.7" # Change Python version to 2.7
 
-      - name: tox install
-        run: pip install tox
+      - name: Install dependencies
+        run: |
+          pip install tox
+          pip install "Django==1.11.21"
 
-      - name: Python 3.8, Django 2.22 Unit Tests
-        run: tox -e py38-django22
+      - name: Run tests
+        run: tox -e py27-django111 # Adjust tox environment for Python 2.7 and Django 1.11
 
       - name: Upload coverage to CodeCov
         uses: codecov/codecov-action@v1
