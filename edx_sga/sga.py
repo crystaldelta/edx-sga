@@ -25,9 +25,9 @@ from django.template import Context, Template
 from django.utils.encoding import force_text
 from django.utils.timezone import now as django_now
 from django.utils.translation import ugettext as _
-from lms.djangoapps.courseware.models import StudentModule
+from courseware.models import StudentModule
 from safe_lxml import etree
-from common.djangoapps.student.models import user_by_anonymous_id
+from student.models import user_by_anonymous_id
 from submissions import api as submissions_api
 from submissions.models import StudentItem as SubmissionsStudent
 from submissions.models import Submission
@@ -39,6 +39,7 @@ from web_fragments.fragment import Fragment
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 from xmodule.contentstore.content import StaticContent
 from xmodule.util.duedate import get_extended_due_date
+from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
 
 from edx_sga.constants import ITEM_TYPE
 from edx_sga.showanswer import ShowAnswerXBlockMixin
@@ -192,7 +193,7 @@ class StaffGradedAssignmentXBlock(StudioEditableXBlockMixin, ShowAnswerXBlockMix
         if 'solution' in node.attrib:
             # Try outputting it as an XML element if we can
             solution = node.attrib['solution']
-            wrapped = f"<solution>{solution}</solution>"
+            wrapped = "<solution>{}</solution>".format(solution)
             try:
                 child = etree.fromstring(wrapped)
             except:  # pylint: disable=bare-except
@@ -584,7 +585,8 @@ class StaffGradedAssignmentXBlock(StudioEditableXBlockMixin, ShowAnswerXBlockMix
             "student_state": json.dumps(self.student_state()),
             "id": self.location.name.replace('.', '_'),
             "max_file_size": self.student_upload_max_size(),
-            "support_email": settings.TECH_SUPPORT_EMAIL
+            "support_email": settings.TECH_SUPPORT_EMAIL,
+            "enable_hide_assignment": configuration_helpers.get_value_theme('ENABLE_HIDE_ASSIGNMENT', False)
         }
         if self.show_staff_grading_interface():
             context['is_course_staff'] = True
@@ -792,6 +794,7 @@ class StaffGradedAssignmentXBlock(StudioEditableXBlockMixin, ShowAnswerXBlockMix
             "upload_allowed": self.upload_allowed(submission_data=submission),
             "solution": solution,
             "base_asset_url": StaticContent.get_base_url_path_for_course_assets(self.location.course_key),
+            "enable_hide_assignment": configuration_helpers.get_value_theme('ENABLE_HIDE_ASSIGNMENT', False)
         }
 
     def staff_grading_data(self):

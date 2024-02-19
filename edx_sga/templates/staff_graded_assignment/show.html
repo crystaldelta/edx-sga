@@ -14,6 +14,8 @@
         <label>
           <% if (uploaded) { %>
             {% trans "Upload a different file" %}
+          <% } else if (enable_hide_assignment) { %>
+            {% trans "Upload" %}
           <% } else { %>
             {% trans "Upload your assignment" %}
           <% } %>
@@ -38,7 +40,11 @@
               <a href="<%= annotatedUrl %>"><%= annotated.filename %></a><br/>
             <% } %>
           <% } else if (uploaded) { %>
-            {% trans "This assignment has not yet been graded." %}
+            <% if (enable_hide_assignment) { %>
+              {% trans "" %}
+            <% } else {%>
+              {% trans "This assignment has not yet been graded." %}
+            <% } %>
           <% } %>
         </p>
         <% if (upload_allowed) { %>
@@ -146,7 +152,7 @@
 
   <section aria-hidden="true" class="modal staff-modal" id="grade-{{ id }}" style="height: 75%" tabindex="-1">
     <div class="inner-wrapper" style="color: black; overflow: auto;">
-      <header><h2><span class="display_name">{{ display_name }}</span> - {% trans "Staff Graded Assignment" %}</h2></header>
+      <header><h2><span class="display_name">{{ display_name }}</span> - {% if enable_hide_assignment %} {% trans "Staff Graded" %} {% else %} {% trans "Staff Graded Assignment" %} {% endif %}</h2></header>
       <br/>
       <div>
         <a class="instructor-info-action button btn-download-all" href="#" id="download-init-button">{% trans "Download All Submissions" %}</a>
