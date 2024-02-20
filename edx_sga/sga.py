@@ -39,6 +39,7 @@ from web_fragments.fragment import Fragment
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 from xmodule.contentstore.content import StaticContent
 from xmodule.util.duedate import get_extended_due_date
+from courseware.middleware import get_org_by_user_domain
 from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
 
 from edx_sga.constants import ITEM_TYPE
@@ -202,6 +203,15 @@ class StaffGradedAssignmentXBlock(StudioEditableXBlockMixin, ShowAnswerXBlockMix
             else:
                 node.append(child)
                 del node.attrib['solution']
+
+    def get_enable_hide_assignment(self):
+        """
+        Added site config variable function to hide assignment texts and also hide This assignment has not yet been graded.
+        """
+        user_id = self.runtime.user_id
+        org = get_org_by_user_domain(user_id)
+        enable_hide_assignment = configuration_helpers.get_value_for_org(org, 'ENABLE_HIDE_ASSIGNMENT', False)
+        return enable_hide_assignment
 
     @XBlock.json_handler
     def save_sga(self, data, suffix=''):
@@ -586,7 +596,7 @@ class StaffGradedAssignmentXBlock(StudioEditableXBlockMixin, ShowAnswerXBlockMix
             "id": self.location.name.replace('.', '_'),
             "max_file_size": self.student_upload_max_size(),
             "support_email": settings.TECH_SUPPORT_EMAIL,
-            "enable_hide_assignment": configuration_helpers.get_value_theme('ENABLE_HIDE_ASSIGNMENT', False)
+            "enable_hide_assignment": self.get_enable_hide_assignment()
         }
         if self.show_staff_grading_interface():
             context['is_course_staff'] = True
@@ -794,7 +804,7 @@ class StaffGradedAssignmentXBlock(StudioEditableXBlockMixin, ShowAnswerXBlockMix
             "upload_allowed": self.upload_allowed(submission_data=submission),
             "solution": solution,
             "base_asset_url": StaticContent.get_base_url_path_for_course_assets(self.location.course_key),
-            "enable_hide_assignment": configuration_helpers.get_value_theme('ENABLE_HIDE_ASSIGNMENT', False)
+            "enable_hide_assignment": self.get_enable_hide_assignment()
         }
 
     def staff_grading_data(self):
