@@ -189,7 +189,7 @@ class StaffGradedAssignmentXBlock(StudioEditableXBlockMixin, ShowAnswerXBlockMix
         """
         Override default serialization to output solution field as a separate child element.
         """
-        super().add_xml_to_node(node)
+        super(StaffGradedAssignmentXBlock, self).add_xml_to_node(node)
 
         if 'solution' in node.attrib:
             # Try outputting it as an XML element if we can
@@ -620,7 +620,7 @@ class StaffGradedAssignmentXBlock(StudioEditableXBlockMixin, ShowAnswerXBlockMix
         Render a form for editing this XBlock
         """
         # this method only exists to provide context=None for backwards compat
-        return super().studio_view(context)
+        return super(StaffGradedAssignmentXBlock, self).studio_view(context)
 
     def clear_student_state(self, *args, **kwargs):
         # pylint: disable=unused-argument
