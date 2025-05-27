@@ -17,7 +17,7 @@ def package_data(pkg, root_list):
     return {pkg: data}
 
 setup(
-    name='edx-sga',
+    name='xen-edx-sga',
     version=edx_sga.__version__,
     description='edx-sga Staff Graded Assignment XBlock',
     license='Affero GNU General Public License v3 (GPLv3)',
@@ -33,7 +33,7 @@ setup(
     ],
     entry_points={
         'xblock.v1': [
-            'edx_sga = edx_sga.sga:StaffGradedAssignmentXBlock',
+            'xen_edx_sga = edx_sga.sga:StaffGradedAssignmentXBlock',
         ]
     },
     package_data=package_data("edx_sga", ["static", "templates"]),
